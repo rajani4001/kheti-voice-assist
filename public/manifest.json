@@ -11,7 +11,18 @@
     {
       "src": "/placeholder.svg",
       "sizes": "192x192",
-      "type": "image/svg+xml"
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "orientation": "portrait",
+  "categories": ["agriculture", "productivity"],
+  "prefer_related_applications": false,
+  "shortcuts": [
+    {
+      "name": "Start Voice Query",
+      "url": "/?action=voice",
+      "description": "Ask a farming question"
     }
   ]
 }
