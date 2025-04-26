@@ -23,7 +23,7 @@ export function useSpeechRecognition({
 }: UseSpeechRecognitionProps): UseSpeechRecognitionReturn {
   const [isListening, setIsListening] = useState(false);
   const [transcript, setTranscript] = useState('');
-  const recognitionRef = useRef<any>(null);
+  const recognitionRef = useRef<SpeechRecognition | null>(null);
   const browserSupportsSpeechRecognition = 'SpeechRecognition' in window || 'webkitSpeechRecognition' in window;
 
   useEffect(() => {
@@ -33,13 +33,13 @@ export function useSpeechRecognition({
     }
 
     // Initialize speech recognition
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    recognitionRef.current = new SpeechRecognition();
+    const SpeechRecognitionAPI = window.SpeechRecognition || window.webkitSpeechRecognition;
+    recognitionRef.current = new SpeechRecognitionAPI();
     recognitionRef.current.continuous = false;
     recognitionRef.current.interimResults = true;
     recognitionRef.current.lang = language;
 
-    recognitionRef.current.onresult = (event: any) => {
+    recognitionRef.current.onresult = (event: SpeechRecognitionEvent) => {
       const current = event.resultIndex;
       const result = event.results[current][0].transcript;
       setTranscript(result);
@@ -54,7 +54,7 @@ export function useSpeechRecognition({
       }
     };
 
-    recognitionRef.current.onerror = (event: any) => {
+    recognitionRef.current.onerror = (event: SpeechRecognitionErrorEvent) => {
       console.error('Speech recognition error', event.error);
       if (onError) onError(event.error);
       setIsListening(false);
